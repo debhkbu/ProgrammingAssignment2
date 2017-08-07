@@ -1,35 +1,34 @@
 ## Put comments here that give an overall description of what your
 ## functions do
 
-## Write a short comment describing this function
+## make matrix assign to variable x, and initialize m to NULL
 
 makeCacheMatrix <- function(x = matrix()) {
-inv <- NULL
-        set <- function(y) {
-                x <<- y
-                inv <<- NULL
+m <- NULL
+        set <- function(y) {     ## if user wants to reset matrix
+                x <<- y          ## reassigning the new matrix to x
+                m <<- NULL       ## re-initialize m to NULL
         }
         get <- function() x
-        setInverse <- function(inverse) inv <<- inverse
-        getInverse <- function() inv
-        list(set = set,
-             get = get,
-             setInverse = setInverse,
-             getInverse = getInverse)
+        setInvmatrix <- function(InvMatrix) m <<- InvMatrix
+        
 }
 
+###############################################################################
+###############################################################################
 
-## Write a short comment describing this function
+
+## Return a matrix that is the inverse of 'x'
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
-        inv <- x$getInverse()
-        if (!is.null(inv)) {
-                message("getting cached data")
-                return(inv)
+        m <- x$getInvmatrix()              
+        if(!is.null(m)) {           ## if user had calculated the same matrix before
+            message("getting cached data")  
+            return(m)               ## return old result(m) directly 
+
         }
-        mat <- x$get()
-        inv <- solve(mat, ...)
-        x$setInverse(inv)
-        inv
+        data <- x$get()             ## otherwise, get the uncalculated matrix
+        m <- solve(data, ...)       ## calculate the inverse matrix
+        x$setInvmatrix(m)           ## reassign inverse matrix 
+        m                           ## print the inverse matrix 
 }
